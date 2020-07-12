@@ -27,4 +27,4 @@ app.post('/atualizar', async (req,res)=>{
       })
     res.send({salvo})
 })
-app.listen(8080)
+app.listen(3000)
