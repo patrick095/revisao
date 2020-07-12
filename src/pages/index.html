@@ -7,6 +7,11 @@
     <!--<link rel="stylesheet" href="./css/style.css">-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--popup-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 </head>
 <body>
     <div id="app" class="app">
@@ -19,7 +24,7 @@
                     {{diaDaSemana}}
                 </option>
             </select>
-        <table class="table">
+        <table class="tablePropria">
             <tr v-for="quant, index in quantidade">
                 <td>
                     <span>Página - <span v-if="index < 9">0</span>{{index + 1}}</span>
@@ -44,15 +49,34 @@
             </tr>
         </table>
     </div>
-
+    <!--pop de confirmação-->
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" style="background-color: #1C1C1C;">
+            <div class="modal-header" style="background-color: red;">
+            </div>
+            <div class="modal-body">
+              <p>Deseja realmente apagar todos os dados da semana?</p>
+              <button type="button" @click="apagar()" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <button @click="popup()" class="btn">Apagar</button>
 </div>
 </body>
 <script>
     var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
-var mes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
-var d = new Date();
-document.getElementById("dia").innerHTML = semana[d.getDay()]+" "+d.getDate()+" de "+mes[d.getMonth()]+" de "+d.getFullYear();
-//Vue
+    var mes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+    var d = new Date();
+    document.getElementById("dia").innerHTML = semana[d.getDay()]+" "+d.getDate()+" de "+mes[d.getMonth()]+" de "+d.getFullYear();
+    //botao popup
+    $('#apagar').on('click', function () {
+        $('.modal').modal('show')
+        console.log("botao apertado")
+    })
+    //Vue
 var app = new Vue({
     el:'#app',
     data: {
@@ -79,6 +103,10 @@ var app = new Vue({
         domO: []
     },
     methods: {
+        popup(){
+            $('.modal').modal('show')
+        console.log("botao apertado")
+        },
         selecionar(){
             console.log("selecionou")
             if (this.dia_da_semana == "Segunda-Feira") {
@@ -109,6 +137,24 @@ var app = new Vue({
                 this.paginasRevisadas = this.domR
                 this.observacoesSalvas = this.domO
             }
+        },
+        apagar() {
+            this.paginasRevisadas = []
+            this.observacoesSalvas = []
+            this.segR = []
+            this.segO = []
+            this.terR = []
+            this.terO = []
+            this.terR = []
+            this.terO = []
+            this.quiR = []
+            this.quiO = []
+            this.sexR = []
+            this.sexO = []
+            this.sabR = []
+            this.sabO = []
+            this.domR = []
+            this.domO = []
         }
     },
     computed: {
@@ -224,11 +270,11 @@ span {
 label {
     color: white;
 }
-table {
+.tablePropria {
     margin-left: 10%;
     margin-right: -10%;
     width: 80%;
-    font-size: 25px;
+    font-size: 20px;
 }
 tr, td {
     padding: 5px;
@@ -245,7 +291,7 @@ td:hover {
     border: 0px;
     font-size: large;
     color: white;
-    background-color: #1717fc;
+    background-color: #3030fc;
 }
 .btn:hover {
     background-color: rgb(22, 2, 206);
