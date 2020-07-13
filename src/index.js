@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false}))
 //socket.io start
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-server.listen(process.env.PORT || 5005);
+server.listen(5005);
 
 io.on('connection', socket => {
     console.log(`socket conectado: ${socket.id}`)
@@ -37,4 +37,4 @@ io.on('connection', socket => {
 app.get('/', (req,res)=>{
     res.sendFile(path.join(__dirname+'/pages/index.html'))
 })
-app.listen(5000)
+app.listen(process.env.PORT || 5000)
