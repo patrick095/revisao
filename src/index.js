@@ -34,6 +34,9 @@ io.on('connection', socket => {
         })
         socket.broadcast.emit('revAtual', salvo)
     })
+    socket.on('disconnect', function(){
+        console.log('user disconnected');
+      });
 })
 
 //socket.io end
