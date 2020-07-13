@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({ extended: false}))
 //socket.io start
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-server.listen(5005);
+server.listen(process.env.PORT2 || 5005);
 
 io.on('connection', socket => {
     console.log(`socket conectado: ${socket.id}`)
