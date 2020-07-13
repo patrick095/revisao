@@ -33,6 +33,7 @@
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-aberta'" v-model="paginasRevisadas">
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-ok'" v-model="paginasRevisadas">
                     <label >OK</label>
+                    <br v-if="computador == false">
                     <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-gi'" v-model="observacoesSalvas[pag]">
                     <label >Gi</label>
                     <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-jak'" v-model="observacoesSalvas[pag]">
