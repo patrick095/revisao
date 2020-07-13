@@ -37,4 +37,4 @@ io.on('connection', socket => {
 app.get('/', (req,res)=>{
     res.sendFile(path.join(__dirname+'/pages/index.html'))
 })
-app.listen(process.env.PORT || 5000)
+app.listen(5000)
