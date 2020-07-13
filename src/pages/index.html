@@ -27,19 +27,19 @@
                 </option>
             </select>
         <table class="tablePropria">
-            <tr v-for="quant, index in quantidade">
+            <tr v-for="pag, index in quantidade">
                 <td>
-                    <span>Página - <span v-if="index < 9">0</span>{{index + 1}}</span>
-                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 1+'-aberta'" v-model="paginasRevisadas">
-                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 1+'-ok'" v-model="paginasRevisadas">
+                    <span>Página - <span v-if="index < 9">0</span>{{pag}}</span>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-aberta'" v-model="paginasRevisadas">
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-ok'" v-model="paginasRevisadas">
                     <label >OK</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 1+'-gi'" v-model="observacoesSalvas[index + 1]">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-gi'" v-model="observacoesSalvas[pag]">
                     <label >Gi</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 1+'-jak'" v-model="observacoesSalvas[index + 1]">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-jak'" v-model="observacoesSalvas[pag]">
                     <label >Jak</label>
                 </td>
-                <td>
-                    <span>Página - {{index + 11}}</span>
+                <td v-if="computador">
+                    <span>Página - {{10+pag}}</span>
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-aberta'" v-model="paginasRevisadas">
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-ok'" v-model="paginasRevisadas">
                     <label >OK</label>
@@ -82,7 +82,8 @@
 var app = new Vue({
     el:'#app',
     data: {
-        quantidade: 10,
+        quantidade: 20,
+        computador: true,
         dia: document.getElementById("dia").innerHTML,
         dia_da_semana: "",
         paginasRevisadas: [],
@@ -222,6 +223,14 @@ var app = new Vue({
         
     },
     created() {
+        if (window.innerWidth > 1080) {
+            this.quantidade = 10
+            this.computador = true
+        }
+        if (window.innerWidth < 1080) {
+            this.computador = false
+            this.quantidade = 20
+        }
         this.dia_da_semana = semana[d.getDay()+1]
         //socket.io
         var socket = io('/');
