@@ -214,7 +214,7 @@ var app = new Vue({
                 domO: this.domO
             }
             //socket.io 
-            var socket = io('https://revisao-auniao.herokuapp.com:5005');
+            var socket = io(':5005');
             socket.emit('atualizar', data)
         }
     },
@@ -224,7 +224,7 @@ var app = new Vue({
     created() {
         this.dia_da_semana = semana[d.getDay()+1]
         //socket.io
-        var socket = io('https://revisao-auniao.herokuapp.com:5005');
+        var socket = io(':5005');
         socket.emit('atual')
         socket.on('revAtual', res =>{
             console.log("socket atualizado")
