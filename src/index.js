@@ -8,11 +8,15 @@ const Revisao = require('./models/revisao')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false}))
 //app.use(cors())
+app.get('/', (req,res)=>{
+    res.sendFile(path.join(__dirname+'/pages/index.html'))
+})
+app.listen(5000)
 
 //socket.io start
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
-server.listen(process.env.PORT2 || 5005);
+server.listen(process.env.PORT || 5005);
 
 io.on('connection', socket => {
     console.log(`socket conectado: ${socket.id}`)
@@ -34,7 +38,3 @@ io.on('connection', socket => {
 
 //socket.io end
 
-app.get('/', (req,res)=>{
-    res.sendFile(path.join(__dirname+'/pages/index.html'))
-})
-app.listen(process.env.PORT || 5000)
