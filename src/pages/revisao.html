@@ -29,7 +29,7 @@
         <table class="tablePropria">
             <tr v-for="pag, index in quantidade">
                 <td>
-                    <input type="checkbox" :value="pag+'-e-liberada'" v-model="paginasRevisadas">
+                    <input type="checkbox" checked v-if="paginasRevisadas.includes(pag+'-e-liberada')">
                     <span>Página - <span v-if="index < 9">0</span>{{pag}}</span>
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-aberta'" v-model="paginasRevisadas">
                     <label v-if="computador == false">Aberta</label>
