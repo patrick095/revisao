@@ -43,7 +43,7 @@
                     <label >Jak</label>
                 </td>
                 <td v-if="computador">
-                    <input type="checkbox" checked v-if="paginasRevisadas.includes(pag+'-e-liberada')">
+                    <input type="checkbox" checked v-if="paginasRevisadas.includes(pag+10+'-e-liberada')">
                     <span>Página - {{10+pag}}</span>
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-aberta'" v-model="paginasRevisadas">
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-ok'" v-model="paginasRevisadas">
