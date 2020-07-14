@@ -43,7 +43,7 @@
                     <td>
                         Revisor
                     </td>
-                    <td>|</td>
+                    <td v-if="computador">|</td>
                     <td v-if="computador">
                         Pág.
                     </td>
@@ -80,7 +80,7 @@
                             <option :value="pag+'-'+revisor" v-for="revisor in revisores">{{revisor}} </option>
                         </select>
                     </td>
-                    <td>|</td>
+                    <td v-if="computador">|</td>
                     <!-- segunda metade renderizar somente se for para computador == true -->
                     <td v-if="computador">Pág. {{pag+10}}</td>
                     <td v-if="computador">
@@ -123,7 +123,7 @@
             computador: true,
             edicao: [],
             edicaoObs: [],
-            editores: ["","fulano", "sicrano"],
+            editores: ["","editor"],
             revisores: ["","Gisélia", "Jaqueline"],
             revisao: [],
             revisaoObs: [],
@@ -179,7 +179,17 @@
         }
         },
         created(){
+            //mostra a data atual
             this.dia_da_semana = semana[d.getDay()+1]
+            //trabalha a responsividade da pagina
+            if (window.innerWidth > 1080) {
+            this.quantidade = 10
+            this.computador = true
+            }
+            if (window.innerWidth < 1080) {
+                this.computador = false
+                this.quantidade = 20
+            }
             //socket.io
             
             var socket = io('https://revisao-auniao.herokuapp.com/');
