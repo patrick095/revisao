@@ -4,7 +4,6 @@ const path = require('path')
 const cors = require('cors')
 const app = express()
 const Revisao = require('./models/revisao')
-const Edicao = require('./models/edicao')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false}))
@@ -17,6 +16,9 @@ app.get('/revisao', (req,res)=>{
 })
 app.get('/resumo', (req,res)=>{
     res.sendFile(path.join(__dirname+'/pages/resume.html'))
+})
+app.get('/edicao', (req,res)=>{
+    res.sendFile(path.join(__dirname+'/pages/edicao.html'))
 })
 app.listen(5000)
 

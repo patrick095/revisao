@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Revisão</title>
+    <title>Edição</title>
     <!--<link rel="stylesheet" href="./css/style.css">-->
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
@@ -18,7 +18,7 @@
 <body>
     <div id="app" class="app">
         <input type="text" hidden ><!--:value="salvarAutomatico"-->
-        <h1>A União - Revisão </span><strong><span id="dia"></h1></strong>
+        <h1>A União - Edição </span><strong><span id="dia"></h1></strong>
         <div id="dia1" class="quadrado container">
             <label for="dia_da_semana">Selecionar dia do jornal:</label>
             <select name="dia_da_semana" id="dia_da_semana" autofocus required v-model="dia_da_semana" class="select" v-on:change="selecionar()">
@@ -30,26 +30,17 @@
             <tr v-for="pag, index in quantidade">
                 <td>
                     <span>Página - <span v-if="index < 9">0</span>{{pag}}</span>
-                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-aberta'" v-model="paginasRevisadas">
-                    <label v-if="computador == false">Aberta</label>
-                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-ok'" v-model="paginasRevisadas">
-                    <label v-if="computador">OK</label>
-                    <label v-if="computador == false">Liberada</label>
-                    <br v-if="computador == false">
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-Gisélia'" v-model="observacoesSalvas[pag]">
-                    <label >Gi</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-Jaqueline'" v-model="observacoesSalvas[pag]">
-                    <label >Jak</label>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'e-aberta'" v-model="paginasRevisadas">
+                    <span>Aberta</span>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-e-liberada'" v-model="paginasRevisadas">
+                    <label >liberada</label>
                 </td>
                 <td v-if="computador">
                     <span>Página - {{10+pag}}</span>
-                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-aberta'" v-model="paginasRevisadas">
-                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-ok'" v-model="paginasRevisadas">
-                    <label >OK</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Gisélia'" v-model="observacoesSalvas[index + 1]">
-                    <label >Gi</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Jaqueline'" v-model="observacoesSalvas[index + 1]">
-                    <label >Jak</label>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag + 10+'e-aberta'" v-model="paginasRevisadas">
+                     <label >Aberta</label>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag + 10+'-e-liberada'" v-model="paginasRevisadas">
+                    <label >liberada</label>
                 </td>
             </tr>
         </table>

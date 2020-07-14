@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A União</title>
+    <title>A União - Resumo</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <!--socket.io-->
@@ -63,11 +63,11 @@
                 <tr v-for="pag in quantidade">
                     <td>Pág. {{pag}}</td>
                     <td>
-                        <input type="checkbox" :value="pag+'e-aberta'" v-model="revisao">
-                        <input type="checkbox" :value="pag+'e-ok'" v-model="revisao">
+                        <input type="checkbox" :value="pag+'e-aberta'" v-model="revisao" @click="mostrar()">
+                        <input type="checkbox" :value="pag+'-e-liberada'" v-model="revisao">
                     </td>
                     <td>
-                        <select :name="pag" id="" v-model="edicaoObs" multiple size="1" class="form-control" style="height: 25px;">
+                        <select :name="pag" id="" v-model="revisaoObs" multiple size="1" class="form-control" style="height: 25px;">
                             <option :value="pag+'-'+editor" v-for="editor in editores">{{editor}} </option>
                         </select>
                     </td>
@@ -85,10 +85,10 @@
                     <td v-if="computador">Pág. {{pag+10}}</td>
                     <td v-if="computador">
                         <input type="checkbox" :value="pag+10+'e-aberta'" v-model="revisao">
-                        <input type="checkbox" :value="pag+10+'e-ok'" v-model="revisao">
+                        <input type="checkbox" :value="pag+10+'-e-liberada'" v-model="revisao">
                     </td>
                     <td v-if="computador">
-                        <select name="" id="" v-model="edicaoObs"  multiple size="1" class="form-control" style="height: 25px;">
+                        <select name="" id="" v-model="revisaoObs"  multiple size="1" class="form-control" style="height: 25px;">
                             <option :value="'1'+pag+'-'+editor" v-for="editor in editores">{{editor}} </option>
                         </select>
                     </td>
@@ -121,8 +121,6 @@
             dia_da_semana: "",
             quantidade: 10,
             computador: true,
-            edicao: [],
-            edicaoObs: [],
             editores: ["","editor"],
             revisores: ["","Gisélia", "Jaqueline"],
             revisao: [],
@@ -144,7 +142,7 @@
         },
         methods: {
             mostrar(){
-                console.log(this.edicaoObs)
+                console.log(this.revisao)
             },
             selecionar(){
             console.log("selecionou")
@@ -213,12 +211,6 @@
                 this.domR = res.domR
                 this.domO = res.domO
                 this.selecionar()
-        })
-        //busca atualização edição a
-        socket.emit('atualEdicao')
-        socket.on('ediAtual', res=>{
-            console.log("edição conectado")
-            console.log(res)
         })
         }
 
