@@ -4,6 +4,7 @@ const path = require('path')
 const cors = require('cors')
 const app = express()
 const Revisao = require('./models/revisao')
+const Edicao = require('./models/edicao')
 
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false}))
@@ -11,10 +12,14 @@ app.use(bodyParser.urlencoded({ extended: false}))
 app.get('/', (req,res)=>{
     res.sendFile(path.join(__dirname+'/pages/index.html'))
 })
+app.get('/revisao', (req,res)=>{
+    res.sendFile(path.join(__dirname+'/pages/revisao.html'))
+})
 app.get('/resumo', (req,res)=>{
     res.sendFile(path.join(__dirname+'/pages/resume.html'))
 })
 app.listen(5000)
+
 
 //socket.io start
 const server = require('http').createServer(app);
@@ -29,7 +34,7 @@ io.on('connection', socket => {
         let atual = await Revisao.findOne(filtro)
         socket.emit('revAtual', atual);
     })
-
+    
     socket.on('atualizar', async data =>{
         let filtro = { _id :"5f0b4c0ee8cb56338c559a6a" }
         let salvo = await Revisao.findOneAndUpdate(filtro, data,{
@@ -37,6 +42,7 @@ io.on('connection', socket => {
         })
         socket.broadcast.emit('revAtual', salvo)
     })
+    
     socket.on('disconnect', function(){
         console.log('user disconnected');
       });

@@ -63,8 +63,8 @@
                 <tr v-for="pag in quantidade">
                     <td>Pág. {{pag}}</td>
                     <td>
-                        <input type="checkbox" :value="pag+'-aberta'" v-model="edicao">
-                        <input type="checkbox" :value="pag+'-ok'" v-model="edicao">
+                        <input type="checkbox" :value="pag+'e-aberta'" v-model="revisao">
+                        <input type="checkbox" :value="pag+'e-ok'" v-model="revisao">
                     </td>
                     <td>
                         <select :name="pag" id="" v-model="edicaoObs" multiple size="1" class="form-control" style="height: 25px;">
@@ -84,8 +84,8 @@
                     <!-- segunda metade renderizar somente se for para computador == true -->
                     <td v-if="computador">Pág. {{pag+10}}</td>
                     <td v-if="computador">
-                        <input type="checkbox" :value="pag+10+'-aberta'" v-model="edicao">
-                        <input type="checkbox" :value="pag+10+'-ok'" v-model="edicao">
+                        <input type="checkbox" :value="pag+10+'e-aberta'" v-model="revisao">
+                        <input type="checkbox" :value="pag+10+'e-ok'" v-model="revisao">
                     </td>
                     <td v-if="computador">
                         <select name="" id="" v-model="edicaoObs"  multiple size="1" class="form-control" style="height: 25px;">
@@ -192,9 +192,10 @@
             }
             //socket.io
             
-            var socket = io('https://revisao-auniao.herokuapp.com/');
-        socket.emit('atual')
-        socket.on('revAtual', res =>{
+            var socket = io('/');
+            //busca atualização revisao
+            socket.emit('atual')
+            socket.on('revAtual', res =>{
             console.log("socket atualizado")
             console.log(res)
                 this.segR = res.segR
@@ -212,6 +213,12 @@
                 this.domR = res.domR
                 this.domO = res.domO
                 this.selecionar()
+        })
+        //busca atualização edição a
+        socket.emit('atualEdicao')
+        socket.on('ediAtual', res=>{
+            console.log("edição conectado")
+            console.log(res)
         })
         }
 

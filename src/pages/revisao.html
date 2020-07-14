@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão</title>
+    <!--<link rel="stylesheet" href="./css/style.css">-->
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--socket.io-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <!--popup-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div id="app" class="app">
+        <input type="text" hidden ><!--:value="salvarAutomatico"-->
+        <h1>A União - Revisão </span><strong><span id="dia"></h1></strong>
+        <div id="dia1" class="quadrado container">
+            <label for="dia_da_semana">Selecionar dia do jornal:</label>
+            <select name="dia_da_semana" id="dia_da_semana" autofocus required v-model="dia_da_semana" class="select" v-on:change="selecionar()">
+                <option v-for="diaDaSemana in semana" :value="diaDaSemana">
+                    {{diaDaSemana}}
+                </option>
+            </select>
+        <table class="tablePropria">
+            <tr v-for="pag, index in quantidade">
+                <td>
+                    <span>Página - <span v-if="index < 9">0</span>{{pag}}</span>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-aberta'" v-model="paginasRevisadas">
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-ok'" v-model="paginasRevisadas">
+                    <label >OK</label>
+                    <br v-if="computador == false">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-Gisélia'" v-model="observacoesSalvas[pag]">
+                    <label >Gi</label>
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-Jaqueline'" v-model="observacoesSalvas[pag]">
+                    <label >Jak</label>
+                </td>
+                <td v-if="computador">
+                    <span>Página - {{10+pag}}</span>
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-aberta'" v-model="paginasRevisadas">
+                    <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-ok'" v-model="paginasRevisadas">
+                    <label >OK</label>
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Gisélia'" v-model="observacoesSalvas[index + 1]">
+                    <label >Gi</label>
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Jaqueline'" v-model="observacoesSalvas[index + 1]">
+                    <label >Jak</label>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <!--pop de confirmação-->
+    <div class="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content" style="background-color: #1C1C1C;">
+            <div class="modal-header" style="background-color: red;">
+            </div>
+            <div class="modal-body">
+              <p>Deseja realmente apagar todos os dados da semana?</p>
+              <button type="button" @click="apagar()" class="btn btn-primary" data-dismiss="modal">Confirmar</button>
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    <button @click="popup()" class="btn">Apagar</button>
+</div>
+</body>
+<script>
+    var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+    var mes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+    var d = new Date();
+    document.getElementById("dia").innerHTML = semana[d.getDay()]+" "+d.getDate()+" de "+mes[d.getMonth()]+" de "+d.getFullYear();
+    //botao popup
+    $('#apagar').on('click', function () {
+        $('.modal').modal('show')
+        console.log("botao apertado")
+    })
+    //Vue
+var app = new Vue({
+    el:'#app',
+    data: {
+        quantidade: 20,
+        computador: true,
+        dia: document.getElementById("dia").innerHTML,
+        dia_da_semana: "",
+        paginasRevisadas: [],
+        pag1: [],
+        observacoesSalvas: [null],
+        semana: ["Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado","Domingo"],
+        segR: [],
+        segO: [],
+        terR: [],
+        terO: [],
+        quaR: [],
+        quaO: [],
+        quiR: [],
+        quiO: [],
+        sexR: [],
+        sexO: [],
+        sabR: [],
+        sabO: [],
+        domR: [],
+        domO: []
+    },
+    methods: {
+        popup(){
+            $('.modal').modal('show')
+        console.log("botao apertado")
+        },
+        atualizar(){
+            console.log("atualizou")
+            let rev = this.paginasRevisadas
+            let obs = this.observacoesSalvas
+            let dia = this.dia_da_semana
+                if (dia == "Segunda-Feira") {
+                    this.segR = rev
+                    this.segO = obs
+                }
+                else if (dia == "Terça-Feira") {
+                    this.terR = rev
+                    this.terO = obs
+                }
+                else if (dia == "Quarta-Feira") {
+                    this.quaR = rev
+                    this.quaO = obs
+                }
+                else if (dia == "Quinta-Feira") {
+                    this.quiR = rev
+                    this.quiO = obs
+                }
+                else if (dia == "Sexta-Feira") {
+                    this.sexR = rev
+                    this.sexO = obs
+                }
+                else if (dia == "Sábado") {
+                    this.sabR = rev
+                    this.sabO = obs
+                }
+                else if (dia == "Domingo") {
+                    this.domR = rev
+                    this.domO = obs
+                }
+        },
+        selecionar(){
+            console.log("selecionou")
+            if (this.dia_da_semana == "Segunda-Feira") {
+                this.paginasRevisadas = this.segR
+                this.observacoesSalvas = this.segO
+            }
+            else if (this.dia_da_semana == "Terça-Feira") {
+                this.paginasRevisadas = this.terR
+                this.observacoesSalvas = this.terO
+            }
+            else if (this.dia_da_semana == "Quarta-Feira") {
+                this.paginasRevisadas = this.quaR
+                this.observacoesSalvas = this.quaO
+            }
+            else if (this.dia_da_semana == "Quinta-Feira") {
+                this.paginasRevisadas = this.quiR
+                this.observacoesSalvas = this.quiO
+            }
+            else if (this.dia_da_semana == "Sexta-Feira") {
+                this.paginasRevisadas = this.sexR
+                this.observacoesSalvas = this.sexO
+            }
+            else if (this.dia_da_semana == "Sábado") {
+                this.paginasRevisadas = this.sabR
+                this.observacoesSalvas = this.sabO
+            }
+            else if (this.dia_da_semana == "Domingo") {
+                this.paginasRevisadas = this.domR
+                this.observacoesSalvas = this.domO
+            }
+        },
+        apagar() {
+            this.paginasRevisadas = []
+            this.observacoesSalvas = []
+            this.segR = []
+            this.segO = []
+            this.terR = []
+            this.terO = []
+            this.terR = []
+            this.terO = []
+            this.quiR = []
+            this.quiO = []
+            this.sexR = []
+            this.sexO = []
+            this.sabR = []
+            this.sabO = []
+            this.domR = []
+            this.domO = []
+            this.salvarAutomatico()
+        },
+        salvarAutomatico(){
+            console.log("salvar automatico acionado")
+            this.atualizar()
+             //conectar a pagina atualizar
+             let data = {
+                segR: this.segR,
+                segO: this.segO,
+                terR: this.terR,
+                terO: this.terO,
+                quaR: this.quaR,
+                quaO: this.quaO,
+                quiR: this.quiR,
+                quiO: this.quiO,
+                sexR: this.sexR,
+                sexO: this.sexO,
+                sabR: this.sabR,
+                sabO: this.sabO,
+                domR: this.domR,
+                domO: this.domO
+            }
+            //socket.io 
+            var socket = io('/');
+            socket.emit('atualizar', data)
+        }
+    },
+    computed: {
+        
+    },
+    created() {
+        if (window.innerWidth > 1080) {
+            this.quantidade = 10
+            this.computador = true
+        }
+        if (window.innerWidth < 1080) {
+            this.computador = false
+            this.quantidade = 20
+        }
+        this.dia_da_semana = semana[d.getDay()+1]
+        //socket.io
+        var socket = io('/');
+        socket.emit('atual')
+        socket.on('revAtual', res =>{
+            console.log("socket atualizado")
+            console.log(res)
+                this.segR = res.segR
+                this.segO = res.segO
+                this.terR = res.terR
+                this.terO = res.terO
+                this.quaR = res.quaR
+                this.quaO = res.quaO
+                this.quiR = res.quiR
+                this.quiO = res.quiO
+                this.sexR = res.sexR
+                this.sexO = res.sexO
+                this.sabR = res.sabR
+                this.sabO = res.sabO
+                this.domR = res.domR
+                this.domO = res.domO
+                this.selecionar()
+        })
+    }
+})
+</script>
+<style>
+    body {
+    background-color: #1C1C1C;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+h1 {
+    font-size: 35px;
+}
+.quadrado {
+    width: 100%;
+    align-content: center;
+}
+.select {
+    margin: 20px;
+    width: 250px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 18px;
+}
+span {
+    color: white;
+}
+.checkbox {
+    width: 20px;
+    height: 20px;
+    border-radius: 50px;
+}
+label {
+    color: white;
+}
+.tablePropria {
+    margin-left: 10%;
+    margin-right: -10%;
+    width: 80%;
+    font-size: 20px;
+}
+tr, td {
+    padding: 1px;
+    text-align: center;
+}
+td:hover {
+    background-color: #272727;
+    }
+.btn {
+    margin: 20px;
+    width: 100px;
+    height: 35px;
+    border-radius: 10px;
+    border: 0px;
+    font-size: large;
+    color: white;
+    background-color: #3030fc;
+}
+.btn:hover {
+    background-color: rgb(22, 2, 206);
+}
+</style>
+</html>
