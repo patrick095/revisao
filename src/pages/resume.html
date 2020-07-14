@@ -67,7 +67,7 @@
                         <input type="checkbox" :value="pag+'-ok'" v-model="edicao">
                     </td>
                     <td>
-                        <select :name="pag" id="" v-model="edicaoObs" @change="mostrar()" multiple size="1">
+                        <select :name="pag" id="" v-model="edicaoObs" multiple size="1" class="form-control" style="height: 25px;">
                             <option :value="pag+'-'+editor" v-for="editor in editores">{{editor}} </option>
                         </select>
                     </td>
@@ -76,7 +76,7 @@
                         <input type="checkbox" :value="pag+'-ok'" v-model="revisao">
                     </td>
                     <td>
-                        <select name="" id="" v-model="revisaoObs"  multiple size="1">
+                        <select name="" id="" v-model="revisaoObs"  multiple size="1" class="form-control" style="height: 25px;">
                             <option :value="pag+'-'+revisor" v-for="revisor in revisores">{{revisor}} </option>
                         </select>
                     </td>
@@ -88,7 +88,7 @@
                         <input type="checkbox" :value="pag+10+'-ok'" v-model="edicao">
                     </td>
                     <td v-if="computador">
-                        <select name="" id="" v-model="edicaoObs"  multiple size="1">
+                        <select name="" id="" v-model="edicaoObs"  multiple size="1" class="form-control" style="height: 25px;">
                             <option :value="'1'+pag+'-'+editor" v-for="editor in editores">{{editor}} </option>
                         </select>
                     </td>
@@ -97,7 +97,7 @@
                         <input type="checkbox" :value="pag+10+'-ok'" v-model="revisao">
                     </td>
                     <td v-if="computador">
-                        <select name="" id="" v-model="revisaoObs"  multiple size="1">
+                        <select name="" id="" v-model="revisaoObs"  multiple size="1" class="form-control" style="height: 25px;">
                             <option :value="'1'+pag+'-'+revisor" v-for="revisor in revisores">{{revisor}} </option>
                         </select>
                     </td>
