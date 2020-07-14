@@ -19,8 +19,8 @@
     <div id="app">
         <div class="container form-group" style="width: 550px; display:flex;">
             <label class="align-middle" for="dia_da_semana" style="width: 350px;">Selecionar dia do Jornal: </label>
-            <select name="dia_da_semana" id="dia_da_semana" required v-model="dia_da_semana" class="form-control" v-on:change="selecionar()" >
-                <option v-for="diaDaSemana in semana" :value="diaDaSemana" >
+            <select name="dia_da_semana" id="dia_da_semana" required v-model="dia_da_semana" class="form-control" style="height: 25px; margin: 0px; padding: 0px; border: 0px;" v-on:change="selecionar()" >
+                <option v-for="diaDaSemana in semana" :value="diaDaSemana" style="margin: 0px; padding: 0px; border: 0px;">
                     <span >{{diaDaSemana}}</span>
                 </option>
             </select>
