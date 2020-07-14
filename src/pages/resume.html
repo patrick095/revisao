@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A União</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <!--socket.io-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+    <!--popup-->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>A União - <span id="dia"></span> </h1>
+    <div id="app">
+        <div class="container form-group" style="width: 550px; display:flex;">
+            <label class="align-middle" for="dia_da_semana" style="width: 350px;">Selecionar dia do Jornal: </label>
+            <select name="dia_da_semana" id="dia_da_semana" required v-model="dia_da_semana" class="form-control" v-on:change="selecionar()" >
+                <option v-for="diaDaSemana in semana" :value="diaDaSemana" >
+                    <span >{{diaDaSemana}}</span>
+                </option>
+            </select>
+        </div>
+        <div class="rounded mx-auto d-block" style="width: 80%;">
+            <table class="table">
+                <tr> <!-- table header-->
+                    <td>
+                        Pág.
+                    </td>
+                    <td>
+                        Edição
+                    </td>
+                    <td>
+                        Editor
+                    </td>
+                    <td>
+                        Revisão
+                    </td>
+                    <td>
+                        Revisor
+                    </td>
+                    <td>|</td>
+                    <td v-if="computador">
+                        Pág.
+                    </td>
+                    <td v-if="computador">
+                        Edição
+                    </td>
+                    <td v-if="computador">
+                        Editor
+                    </td>
+                    <td v-if="computador">
+                        Revisão
+                    </td>
+                    <td v-if="computador">
+                        Revisor
+                    </td>
+                </tr>
+                <tr v-for="pag in quantidade">
+                    <td>Pág. {{pag}}</td>
+                    <td>
+                        <input type="checkbox" :value="pag+'-aberta'" v-model="edicao">
+                        <input type="checkbox" :value="pag+'-ok'" v-model="edicao">
+                    </td>
+                    <td>
+                        <select :name="pag" id="" v-model="edicaoObs" @change="mostrar()" multiple size="1">
+                            <option :value="pag+'-'+editor" v-for="editor in editores">{{editor}} </option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="checkbox" :value="pag+'-aberta'" v-model="revisao">
+                        <input type="checkbox" :value="pag+'-ok'" v-model="revisao">
+                    </td>
+                    <td>
+                        <select name="" id="" v-model="revisaoObs"  multiple size="1">
+                            <option :value="pag+'-'+revisor" v-for="revisor in revisores">{{revisor}} </option>
+                        </select>
+                    </td>
+                    <td>|</td>
+                    <!-- segunda metade renderizar somente se for para computador == true -->
+                    <td v-if="computador">Pág. {{pag+10}}</td>
+                    <td v-if="computador">
+                        <input type="checkbox" :value="pag+10+'-aberta'" v-model="edicao">
+                        <input type="checkbox" :value="pag+10+'-ok'" v-model="edicao">
+                    </td>
+                    <td v-if="computador">
+                        <select name="" id="" v-model="edicaoObs"  multiple size="1">
+                            <option :value="'1'+pag+'-'+editor" v-for="editor in editores">{{editor}} </option>
+                        </select>
+                    </td>
+                    <td v-if="computador">
+                        <input type="checkbox" :value="pag+10+'-aberta'" v-model="revisao">
+                        <input type="checkbox" :value="pag+10+'-ok'" v-model="revisao">
+                    </td>
+                    <td v-if="computador">
+                        <select name="" id="" v-model="revisaoObs"  multiple size="1">
+                            <option :value="'1'+pag+'-'+revisor" v-for="revisor in revisores">{{revisor}} </option>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</body>
+<script>
+    var semana = ["Domingo", "Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado"];
+    var mes = ["janeiro", "fevereiro", "março", "abril", "maio", "junho", "julho", "agosto", "setembro", "outubro", "novembro", "dezembro"]
+    var d = new Date();
+    document.getElementById("dia").innerHTML = semana[d.getDay()]+" "+d.getDate()+" de "+mes[d.getMonth()]+" de "+d.getFullYear();
+
+    //Vue
+    var app = new Vue({
+        el: "#app",
+        data: {
+            semana: ["Segunda-Feira", "Terça-Feira", "Quarta-Feira", "Quinta-Feira", "Sexta-Feira", "Sábado","Domingo"],
+            dia_da_semana: "",
+            quantidade: 10,
+            computador: true,
+            edicao: [],
+            edicaoObs: [],
+            editores: ["","fulano", "sicrano"],
+            revisores: ["","Gisélia", "Jaqueline"],
+            revisao: [],
+            revisaoObs: [],
+            segR: [],
+            segO: [],
+            terR: [],
+            terO: [],
+            quaR: [],
+            quaO: [],
+            quiR: [],
+            quiO: [],
+            sexR: [],
+            sexO: [],
+            sabR: [],
+            sabO: [],
+            domR: [],
+            domO: [],
+        },
+        methods: {
+            mostrar(){
+                console.log(this.edicaoObs)
+            },
+            selecionar(){
+            console.log("selecionou")
+            if (this.dia_da_semana == "Segunda-Feira") {
+                this.revisao = this.segR
+                this.observacoesSalvas = this.segO
+            }
+            else if (this.dia_da_semana == "Terça-Feira") {
+                this.revisao = this.terR
+                this.observacoesSalvas = this.terO
+            }
+            else if (this.dia_da_semana == "Quarta-Feira") {
+                this.revisao = this.quaR
+                this.observacoesSalvas = this.quaO
+            }
+            else if (this.dia_da_semana == "Quinta-Feira") {
+                this.revisao = this.quiR
+                this.observacoesSalvas = this.quiO
+            }
+            else if (this.dia_da_semana == "Sexta-Feira") {
+                this.revisao = this.sexR
+                this.observacoesSalvas = this.sexO
+            }
+            else if (this.dia_da_semana == "Sábado") {
+                this.revisao = this.sabR
+                this.observacoesSalvas = this.sabO
+            }
+            else if (this.dia_da_semana == "Domingo") {
+                this.revisao = this.domR
+                this.observacoesSalvas = this.domO
+            }
+        }
+        },
+        created(){
+            this.dia_da_semana = semana[d.getDay()+1]
+            //socket.io
+            /*
+            var socket = io('https://revisao-auniao.herokuapp.com/');
+        socket.emit('atual')
+        socket.on('revAtual', res =>{
+            console.log("socket atualizado")
+            console.log(res)
+                this.segR = res.segR
+                this.segO = res.segO
+                this.terR = res.terR
+                this.terO = res.terO
+                this.quaR = res.quaR
+                this.quaO = res.quaO
+                this.quiR = res.quiR
+                this.quiO = res.quiO
+                this.sexR = res.sexR
+                this.sexO = res.sexO
+                this.sabR = res.sabR
+                this.sabO = res.sabO
+                this.domR = res.domR
+                this.domO = res.domO
+                this.selecionar()
+        })*/
+        }
+
+    })
+</script>
+
+<style>
+    body {
+    background-color: #1C1C1C;
+    color: white;
+    font-size: 18px;
+    text-align: center;
+}
+
+</style>
+</html>
