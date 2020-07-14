@@ -36,7 +36,7 @@
                     <br v-if="computador == false">
                     <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-Gisélia'" v-model="observacoesSalvas[pag]">
                     <label >Gi</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-jak'" v-model="observacoesSalvas[pag]">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="pag+'-Jaqueline'" v-model="observacoesSalvas[pag]">
                     <label >Jak</label>
                 </td>
                 <td v-if="computador">
@@ -46,7 +46,7 @@
                     <label >OK</label>
                     <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Gisélia'" v-model="observacoesSalvas[index + 1]">
                     <label >Gi</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-jak'" v-model="observacoesSalvas[index + 1]">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Jaqueline'" v-model="observacoesSalvas[index + 1]">
                     <label >Jak</label>
                 </td>
             </tr>

@@ -11,6 +11,9 @@ app.use(bodyParser.urlencoded({ extended: false}))
 app.get('/', (req,res)=>{
     res.sendFile(path.join(__dirname+'/pages/index.html'))
 })
+app.get('/resumo', (req,res)=>{
+    res.sendFile(path.join(__dirname+'/pages/resume.html'))
+})
 app.listen(5000)
 
 //socket.io start
