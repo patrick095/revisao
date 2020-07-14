@@ -29,6 +29,7 @@
         <table class="tablePropria">
             <tr v-for="pag, index in quantidade">
                 <td>
+                    <input type="checkbox" :value="pag+'-e-liberada'" v-model="paginasRevisadas">
                     <span>Página - <span v-if="index < 9">0</span>{{pag}}</span>
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="pag+'-aberta'" v-model="paginasRevisadas">
                     <label v-if="computador == false">Aberta</label>
@@ -42,6 +43,7 @@
                     <label >Jak</label>
                 </td>
                 <td v-if="computador">
+                    <input type="checkbox" :value="pag+10+'-e-liberada'" v-model="paginasRevisadas">
                     <span>Página - {{10+pag}}</span>
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-aberta'" v-model="paginasRevisadas">
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-ok'" v-model="paginasRevisadas">
