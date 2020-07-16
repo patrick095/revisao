@@ -48,9 +48,9 @@
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-aberta'" v-model="paginasRevisadas">
                     <input type="checkbox" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-ok'" v-model="paginasRevisadas">
                     <label >OK</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Gisélia'" v-model="observacoesSalvas[index + 1]">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Gisélia'" v-model="observacoesSalvas[pag+10]">
                     <label >Gi</label>
-                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Jaqueline'" v-model="observacoesSalvas[index + 1]">
+                    <input type="radio" class="checkbox" @change="salvarAutomatico()" :value="index + 11+'-Jaqueline'" v-model="observacoesSalvas[pag+10]">
                     <label >Jak</label>
                 </td>
             </tr>
